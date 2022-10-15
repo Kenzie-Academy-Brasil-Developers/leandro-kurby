@@ -85,10 +85,14 @@ export const LoginContainer = styled.div`
                 padding-top: 1.688rem;
                 color: var(--Grey-1);
                 font-size: 10px;
-                font-weigth: 600;
+                font-weight: 600;
             }
     
             .registerButton {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
                 margin-top: 1.063rem;
                 margin-bottom: 2.125rem;
                 background-color: var(--Grey-1);
@@ -99,7 +103,7 @@ export const LoginContainer = styled.div`
                 font-size: 13px;
                 font-weight: 500;
                 cursor: pointer;
-                transition: 500ms;   
+                transition: 500ms;  
 
                 &:hover {
                     background-color: var(--Grey-2); 
@@ -168,5 +172,4 @@ export const LoginContainer = styled.div`
             }
         }
     }
-    
 `

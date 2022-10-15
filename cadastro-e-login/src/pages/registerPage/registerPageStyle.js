@@ -15,7 +15,11 @@ export const RegisterContainer = styled.div`
             align-items: center;
             justify-content: space-between; 
 
-            button {
+            a {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
                 color: var(--Grey-0);
                 background-color: var(--Grey-3);
                 font-weight: 600;
@@ -40,13 +44,13 @@ export const RegisterContainer = styled.div`
             h3 {
                 padding-top: 2.063rem;
                 color: var(--Grey-0);
-                font-weigth: 400;
+                font-weight: 400;
                 font-size: 14px;
             }
 
             p {
                 padding-top: 1.125rem;
-                paddint-bottom: 0.188rem;
+                padding-bottom: 0.188rem;
                 color: var(--Grey-1);
                 font-weight: 400;
                 font-size: 10px;

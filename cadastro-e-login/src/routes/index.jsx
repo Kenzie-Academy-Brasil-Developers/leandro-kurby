@@ -2,20 +2,22 @@ import { Routes, Route } from "react-router-dom";
 import { LoginPage } from "../pages/loginPage/loginPage";
 import { MainPage } from "../pages/mainPage/mainPage";
 import { RegisterPage } from "../pages/registerPage/registerPage";
-import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import { ProtectedRoutes } from "../components/protectedRoutes/protectedRoutes";
+
 
 export const RoutesMain = () => {
 
   return (
     <>
-       <Routes>
+      <Routes>
         <Route path="/" element={ <LoginPage />} /> 
         <Route path="/login" element={ <LoginPage />} /> 
         <Route path="/register" element={ <RegisterPage />} />
-        <Route path="/mainpage/:name" element={ <MainPage /> } />
+ 
+        <Route element={ <ProtectedRoutes /> } >
+          <Route path="/mainpage" element={ <MainPage /> } />
+        </Route>
       </Routes>
-      <ToastContainer/>
     </>
    
   )

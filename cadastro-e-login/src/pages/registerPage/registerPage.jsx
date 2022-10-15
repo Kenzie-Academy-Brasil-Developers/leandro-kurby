@@ -5,120 +5,139 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RegisterContainer } from "./registerPageStyle";
 import { notifyError, notifySuccess } from "../../toastify/toast";
-import { useNavigate, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const schema = yup.object({
+  email: yup
+    .string()
+    .email("Deve ser um e-mail válido")
+    .required("Campo obrigatório"),
 
-    email: yup.string().email("Deve ser um e-mail válido").required("Campo obrigatório"),
-
-    password: yup
+  password: yup
     .string()
     .min(8, "A senha deve ter no minímo 8 caractéres")
     .required("Campo obrigatório")
-    .matches(/^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*-])/,
-     "A senha deve conter pelo menos 1 número e 1 um caractér especial"),
-
-    confirmPassword: yup
-    .string()
-    .oneOf(
-        [yup.ref("password")],
-        "As senhas não coincidem"
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*-])/,
+      "A senha deve conter pelo menos 1 número e 1 um caractér especial"
     ),
 
-    name: yup.string().required("Campo obrigatório"),
-    
-    bio: yup.string().required("Campo obrigatório"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password")], "As senhas não coincidem"),
 
-    contact: yup.string().required("Campo obrigatório"),
+  name: yup.string().required("Campo obrigatório"),
 
+  bio: yup.string().required("Campo obrigatório"),
+
+  contact: yup.string().required("Campo obrigatório"),
 });
 
 export const RegisterPage = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: "onChange",
+  });
 
-    const navigate = useNavigate();
+  console.log(isValid);
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isValid },
-    } = useForm({  
-        resolver: yupResolver(schema),
-        mode: "onChange",
-    });
-
-    const registerUser = (data) => {
-
-        ApiRequest.post("/users", data)
-        .then(res => 
-            res && notifySuccess("Conta criada com sucesso!"))
-        .catch(({response: {data: {message}}}) => 
-            message && notifyError("Ops! Algo deu errado, este endereço de e-mail já existe")
-        )
+  const registerUser = async (data) => {
+    try {
+      await ApiRequest.post("/users", data);
+      notifySuccess("Conta criada com sucesso!");
+    } catch (error) {
+      notifyError("Ops! Algo deu errado, este endereço de e-mail já existe");
     }
+  };
 
-    if(localStorage.getItem("@token")) {
-        return <Navigate to={`/mainpage/${localStorage.getItem("@userName")}`} />
-    }
+  return (
+    <RegisterContainer>
+      <div className="centralizedContainer">
+        <header>
+          <img src={LogoKenzie} alt="Logo Kenzie Hub" />
+          <Link to={"/login"}>Voltar</Link>
+        </header>
 
-    return (
-        <RegisterContainer>
+        <div>
+          <h3>Crie sua conta</h3>
 
-           <div className="centralizedContainer">
+          <p>Rápido e grátis, vamos nessa</p>
 
-              <header>
+          <form onSubmit={handleSubmit(registerUser)}>
+            <label>Nome</label>
+            <input
+              type="text"
+              placeholder="Digite aqui seu nome"
+              {...register("name")}
+            />
+            <small>{errors.name?.message}</small>
 
-                <img src={LogoKenzie} alt="Logo Kenzie Hub" />
-                <button onClick={() => navigate("/login")}>Voltar</button>
+            <label>Email</label>
+            <input
+              type="email"
+              placeholder="Digite aqui seu e-mail"
+              {...register("email")}
+            />
+            <small>{errors.email?.message}</small>
 
-              </header>
+            <label>Senha</label>
+            <input
+              type="password"
+              placeholder="Digite aqui sua senha"
+              {...register("password")}
+            />
+            <small>{errors.password?.message}</small>
 
-                <div>
+            <label>Confirmar Senha</label>
+            <input
+              type="password"
+              placeholder="Confirme sua senha"
+              {...register("confirmPassword")}
+            />
+            <small>{errors.confirmPassword?.message}</small>
 
-                    <h3>Crie sua conta</h3>
+            <label>Bio</label>
+            <input
+              type="text"
+              placeholder="Fale sobre você"
+              {...register("bio")}
+            />
+            <small>{errors.bio?.message}</small>
 
-                    <p>Rápido e grátis, vamos nessa</p>
+            <label>Contato</label>
+            <input
+              type="text"
+              placeholder="Opção de contato"
+              {...register("contact")}
+            />
+            <small>{errors.contact?.message}</small>
 
-                    <form onSubmit={handleSubmit(registerUser)}>
+            <label>Selecionar Módulo</label>
+            <select {...register("course_module")}>
+              <option value="Primeiro módulo (Introdução ao Frontend)">
+                Primeiro Módulo
+              </option>
+              <option value="Segundo módulo (Frontend Avançado)">
+                Segundo Módulo
+              </option>
+              <option value="Terceiro módulo (Introdução ao Backend)">
+                Terceiro Módulo
+              </option>
+              <option value="Quarto módulo (Backend Avançado)">
+                Quarto Módulo
+              </option>
+            </select>
 
-                        <label>Nome</label>
-                        <input type="text" placeholder="Digite aqui seu nome" {...register("name")} />
-                        <small>{errors.name?.message}</small>
-
-                        <label>Email</label>
-                        <input type="email" placeholder="Digite aqui seu e-mail" {...register("email")}/>
-                        <small>{errors.email?.message}</small>
-
-                        <label>Senha</label>
-                        <input type="password" placeholder="Digite aqui sua senha" {...register("password")} />
-                        <small>{errors.password?.message}</small>
-
-                        <label>Confirmar Senha</label>
-                        <input type="password" placeholder="Confirme sua senha" {...register("confirmPassword")} />
-                        <small>{errors.confirmPassword?.message}</small>
-
-                        <label>Bio</label>
-                        <input type="text" placeholder="Fale sobre você" {...register("bio")} />
-                        <small>{errors.bio?.message}</small>
-
-                        <label>Contato</label>
-                        <input type="text" placeholder="Opção de contato" {...register("contact")} />
-                        <small>{errors.contact?.message}</small>
-
-                        <label>Selecionar Módulo</label>
-                        <select {...register("course_module")}>
-                            <option value="Primeiro Módulo">Primeiro Módulo</option>
-                            <option value="Segundo Módulo">Segundo Módulo</option>
-                            <option value="Terceiro Módulo">Terceiro Módulo</option>
-                            <option value="Quarto Módulo">Quarto Módulo</option>
-                        </select>
-
-                        <button type="submit" className="submitButton" disabled={!isValid}>Cadastrar</button>
-
-                    </form>  
-
-                </div>
-
-            </div>
-        </RegisterContainer>
-    );
+            <button type="submit" className="submitButton" disabled={!isValid}>
+              Cadastrar
+            </button>
+          </form>
+        </div>
+      </div>
+    </RegisterContainer>
+  );
 };
