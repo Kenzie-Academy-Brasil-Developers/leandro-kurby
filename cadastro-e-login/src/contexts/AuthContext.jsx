@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { ApiRequest } from "../services/api";
 import { useNavigate } from "react-router-dom";
-import { notifyError } from "../toastify/toast";
+import { notifyError, notifySuccess } from "../toastify/toast";
 
 export const AuthContext = createContext({});
 
@@ -42,8 +42,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const registerUser = async (data) => {
+    try {
+      await ApiRequest.post("/users", data);
+      notifySuccess("Conta criada com sucesso!");
+    } catch (error) {
+      notifyError("Ops! Algo deu errado, este endereço de e-mail já existe");
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ userLogin, user, loadingPage, setReload }}>
+    <AuthContext.Provider
+      value={{ userLogin, registerUser, user, loadingPage, setReload }}
+    >
       {children}
     </AuthContext.Provider>
   );

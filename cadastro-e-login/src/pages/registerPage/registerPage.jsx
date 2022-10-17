@@ -4,8 +4,9 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RegisterContainer } from "./registerPageStyle";
-import { notifyError, notifySuccess } from "../../toastify/toast";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const schema = yup.object({
   email: yup
@@ -34,6 +35,8 @@ const schema = yup.object({
 });
 
 export const RegisterPage = () => {
+  const { registerUser } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
@@ -42,17 +45,6 @@ export const RegisterPage = () => {
     resolver: yupResolver(schema),
     mode: "onChange",
   });
-
-  console.log(isValid);
-
-  const registerUser = async (data) => {
-    try {
-      await ApiRequest.post("/users", data);
-      notifySuccess("Conta criada com sucesso!");
-    } catch (error) {
-      notifyError("Ops! Algo deu errado, este endereço de e-mail já existe");
-    }
-  };
 
   return (
     <RegisterContainer>
