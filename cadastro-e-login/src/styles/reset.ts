@@ -48,4 +48,4 @@ body {
 
     --Sucess: #3FE864;
     --Negative: #E83F5B;
-}`
+}`;

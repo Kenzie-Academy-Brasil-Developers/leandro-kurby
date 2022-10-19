@@ -34,5 +34,7 @@ export const MainPage = () => {
         <ListOfTechnologies />
       </MainPageContainer>
     );
+  } else {
+    return <></>;
   }
 };
