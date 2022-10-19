@@ -1,6 +1,6 @@
 import { toast, Zoom } from "react-toastify";
 
-export const notifySuccess = (content) => toast.success(content, {
+export const notifySuccess = (content: string) => toast.success(content, {
     position: "top-right",
     autoClose: 1200,
     hideProgressBar: false,
@@ -16,11 +16,10 @@ export const notifySuccess = (content) => toast.success(content, {
         fontWeight: "700",
         borderRadius : "4px",
         height: "69px",
-        closeButton: "var(--Grey-0)",
     }
 })
 
-export const notifyError = (content) => toast.error(content, {
+export const notifyError = (content: string) => toast.error(content, {
     position: "top-right",
     autoClose: 2000,
     hideProgressBar: false,
@@ -36,6 +35,5 @@ export const notifyError = (content) => toast.error(content, {
         fontWeight: "700",
         borderRadius : "4px",
         height: "69px",
-        closeButton: "var(--Grey-0)",
     }
 })

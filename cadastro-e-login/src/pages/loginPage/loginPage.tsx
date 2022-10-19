@@ -1,11 +1,17 @@
+// @ts-ignore
+import LogoKenzie from "../../assets/Logo.svg";
 import { useContext } from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import LogoKenzie from "../../assets/Logo.svg";
 import { LoginContainer } from "./loginPageStyle";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
+
+interface iFormLogin {
+  email: string;
+  password: string;
+}
 
 const schema = yup.object().shape({
   email: yup
@@ -23,7 +29,7 @@ export const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm({
+  } = useForm<iFormLogin>({
     resolver: yupResolver(schema),
     mode: "onChange",
   });

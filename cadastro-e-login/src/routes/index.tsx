@@ -3,6 +3,7 @@ import { LoginPage } from "../pages/loginPage/loginPage";
 import { MainPage } from "../pages/mainPage/mainPage";
 import { RegisterPage } from "../pages/registerPage/registerPage";
 import { ProtectedRoutes } from "../components/protectedRoutes/protectedRoutes";
+import React from "react";
 
 
 export const RoutesMain = () => {

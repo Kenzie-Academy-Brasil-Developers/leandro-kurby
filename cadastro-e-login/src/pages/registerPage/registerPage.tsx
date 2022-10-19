@@ -1,4 +1,4 @@
-import { ApiRequest } from "../../services/api";
+// @ts-ignore
 import LogoKenzie from "../../assets/Logo.svg";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -7,6 +7,16 @@ import { RegisterContainer } from "./registerPageStyle";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
+
+interface iFormRegister {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  name: string;
+  bio: string;
+  contact: string;
+  course_module: string;
+}
 
 const schema = yup.object({
   email: yup
@@ -41,7 +51,7 @@ export const RegisterPage = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm({
+  } = useForm<iFormRegister>({
     resolver: yupResolver(schema),
     mode: "onChange",
   });
